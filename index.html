@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Feel the beat!!!</title>
+    <link rel="icon" href="icon.png">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="script.js"></script>
+</head>
+<body>
+<div id="main" align="center">
+    <audio id="play_audio" controls></audio>
+    <select id="playlist"></select>
+    <button id="play">Play</button>
+    <input type="checkbox" id="replay">
+    <span id="file_name"></span>
+    <p id="ahihi" style="display: inline-block;">
+        <select id="song_list" size="5"></select>
+    </p>
+    <p id="loop" style="display: table-cell;">
+        <button id="start">Start</button>
+        <button id="stop">Stop</button>
+        <input type="number" id="loop_time" value="20" style="width: 40px;">
+    </p>
+</div>
+</body>
+<style>
+    option {
+        cursor: pointer;
+        padding-left: 10px;
+    }
+
+    button {
+        cursor: pointer;
+        padding: 5px;
+    }
+
+    select {
+        padding: 5px;
+    }
+
+    #ahihi:hover > * {
+        visibility: visible;
+    }
+
+    #ahihi > * {
+        visibility: hidden;
+    }
+
+    #main > * {
+        margin: 5px;
+    }
+
+    span, audio {
+        display: block;
+    }
+
+    #loop:hover > * {
+        visibility: visible;
+    }
+
+    #loop > * {
+        visibility: hidden;
+    }
+</style>
+</html>
