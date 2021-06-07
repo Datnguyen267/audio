@@ -30,18 +30,28 @@ if (isset($_GET['playlist'])) {
 // get playlist detail
 if (isset($_GET['playlist_detail'])) {
 
-    $sql = 'SELECT song.song_id, song.name, song.artis, song.link
-    FROM playlist_detail
-    JOIN song ON song.song_id = playlist_detail.song_id
-    WHERE playlist_detail.is_disabled = 0 AND song.is_disabled = 0 AND playlist_detail.play_list_id = ' . $_GET['playlist_detail'];
+    if (intval($_GET['playlist_detail']) === 0) { // get all songs
+        $sql = 'SELECT song.song_id, song.name, song.artist, song.link
+        FROM song
+        WHERE song.is_disabled = 0 ';
+        $sql .= ' ORDER BY song.name';
+    } else { // get by play_list_id
+        $sql = 'SELECT song.song_id, song.name, song.artist, song.link
+        FROM playlist_detail
+        JOIN song ON song.song_id = playlist_detail.song_id
+        WHERE playlist_detail.is_disabled = 0 AND song.is_disabled = 0 AND playlist_detail.play_list_id = ' . $_GET['playlist_detail'];
+        $sql .= ' ORDER BY song.name';
+    }
+
 
     $result = $conn->query($sql);
     $res = [];
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
-            $res[$row['song_id']] = [
+            $res[] = [
+                'song_id' => $row['song_id'],
                 'name' => $row['name'],
-                'artis' => $row['artis'],
+                'artist' => $row['artist'],
                 'link' => $row['link'],
             ];
         }

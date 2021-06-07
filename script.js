@@ -14,7 +14,6 @@ $(document).ready(function () {
 
     $('#play').click(function () {
         play_audio();
-        generate_song_list();
     });
 
     $('#playlist').change(function () {
@@ -27,12 +26,12 @@ $(document).ready(function () {
     });
 
     $('#start').click(function () {
-        let loop_time = ($('#loop_time').val() * 1000) + 3000;
+        let loop_time = ($('#loop_time').val() * 1000) + 5000;
         let loop = setInterval(function () {
             audio.pause();
             setTimeout(function () {
                 audio.play();
-            }, 3000);
+            }, 5000);
         }, loop_time);
 
         $('#stop').click(function () {
@@ -51,7 +50,10 @@ $(document).ready(function () {
         audio.src = list_song[index]['link'];
         audio.load();
         audio.play();
-        document.title = list_song[index]['name'] + ' - ' + 'Feel the beat!!!';
+        document.title = list_song[index]['name'] + ' - ' + list_song[index]['artist'] + ' - ' + 'Feel the beat!!!';
+
+        $('#file_name').empty();
+        $('#file_name').append('Now playing: ' + list_song[index]['name'] + ' - ' + list_song[index]['artist']);
     }
 
     function get_playlist() {
@@ -73,7 +75,6 @@ $(document).ready(function () {
                 generate_song_list();
             }
         });
-
     }
 
     function generate_song_list() {
@@ -89,11 +90,22 @@ $(document).ready(function () {
                 playlist_detail: current_playlist
             },
             success: function (result) {
-                list_song = result;
+                list_song = {};
+
+                for (key in result) {
+                    if (result.hasOwnProperty(key)) {
+                        list_song[result[key]['song_id']] = {
+                            name: result[key]['name'],
+                            artist: result[key]['artist'],
+                            link: result[key]['link'],
+                        };
+                    }
+                }
+
                 let str = '';
                 for (key in result) {
                     if (result.hasOwnProperty(key)) {
-                        str += '<option value = "' + key + '">' + result[key]['name'] + ' - ' + result[key]['artis'] + '</option>';
+                        str += '<option value = "' + result[key]['song_id'] + '">' + result[key]['name'] + ' - ' + result[key]['artist'] + '</option>';
                     }
                 }
                 $('#song_list').append(str);
